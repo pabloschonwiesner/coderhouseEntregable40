@@ -46,10 +46,10 @@ async function actualizarProducto () {
       let productoActualizado = results[2].data.data
       let productoEliminado = results[3].data.data
 
-      console.log('Listar productos: ', productos)
-      console.log('Producto agregado: ', productoAgregado)
-      console.log('Producto actualizado: ', productoActualizado)
-      console.log('Producto eliminado: ', productoEliminado)
+      // console.log('Listar productos: ', productos)
+      // console.log('Producto agregado: ', productoAgregado)
+      // console.log('Producto actualizado: ', productoActualizado)
+      // console.log('Producto eliminado: ', productoEliminado)
     })
     .catch( err => console.log(err))
 })()

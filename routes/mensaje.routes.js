@@ -1,12 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const { checkIsAuthenticated }= require('./../middlewares/auth')
-const MensajeServicio = require('./../services/mensaje.service')
+const mensajesGetAll = require('./../controllers/mensaje.controller')
 
-const mensajeServicio = new MensajeServicio()
-
-router.get('/chat', checkIsAuthenticated, async (req, res) => {
-  res.render('chat', { productos: await mensajeServicio.getAll()} )
-})
+router.get('/chat', checkIsAuthenticated, mensajesGetAll)
 
 module.exports = router

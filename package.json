@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha",
     "dev": "nodemon app.js",
-    "debug": "nodemon app.js"
+    "start": "node app.js",
+    "debug": "nodemon app.js db=mysql"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "graphql": "^15.5.0",
     "mongoose": "^5.12.5",
     "mongoose-sequence": "^5.3.1",
+    "mysql": "^2.18.1",
     "nodemailer": "^4.7.0",
     "nodemon": "^2.0.7",
     "passport": "^0.4.1",

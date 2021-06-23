@@ -1,10 +1,5 @@
-const request = require('supertest')('http://localhost:3232')
+const request = require('supertest')('http://localhost:3233')
 const expect = require('chai').expect
-
-const ProductoServicio = require('./../services/producto.service')
-
-
-const productoServicio = new ProductoServicio()
 
 describe('Test de integracion de productos', function() {
   describe('Listado de producto', function () {

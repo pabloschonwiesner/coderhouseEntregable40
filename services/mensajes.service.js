@@ -49,7 +49,7 @@ class MensajesServicio {
         console.log(err);
         return err
       }
-      console.log(info);
+      // console.log(info);
       return
     })
   }
@@ -69,7 +69,7 @@ class MensajesServicio {
         console.log(err);
         return err
       }
-      console.log(info);
+      // console.log(info);
     })
   }
 

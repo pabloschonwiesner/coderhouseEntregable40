@@ -119,7 +119,7 @@ socket.on('connect', () => {
   
 
   socket.on('message', (data) => {
-    console.log(data)
+    // console.log(data)
     crearMensaje(data)
   })
 
@@ -140,7 +140,7 @@ function seleccionarProducto ( fila ) {
   let src = columnas[3].getElementsByTagName('img')[0].src
 
   let selectWrapper = select[0].getElementsByClassName('dropdown-content')
-  console.log(selectWrapper[0])
+  // console.log(selectWrapper[0])
   let itemsLista = selectWrapper[0].getElementsByTagName('li')
 
   for(let i = 0 ; i < itemsLista.length ; i++) {

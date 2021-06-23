@@ -1,17 +1,30 @@
-const mongoose = require('mongoose')
+const { db } = require('./env.service')
+const ConexionFactory = require('./dbs/conexionFactory.dbs')
 
-function connectToDatabase () {
-  console.log(`desde connectToDatabase: ${process.env.MONGO_URL}`);
-  return new Promise((resolve, reject) => {
-    mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true}, (err) => {
-      if(err) {
-        reject(err)
+class DbService {
+  db = null
+  instance = 0
+
+  async DbConnect () {
+    return ConexionFactory.create(db).connect()
+  }
+
+  async GetConnection () {
+    try {
+      this.instance++
+      console.log(`GetConnection instance ${this.instance} - ${db}`);
+
+      if( this.db != null ) {
+        console.log('Conexion ya había sido iniciada')
+        return this.db
+      } else {
+        console.log('Conexion iniciada')
+        this.db = await this.DbConnect()
+        return this.db
       }
-      
-      console.log('Base de datos ONLINE');
-      resolve(true)
-    });
-  })
+    } catch ( e ) { console.log(e);return e; }
+  }
+
 }
 
-module.exports = connectToDatabase
+module.exports = new DbService()

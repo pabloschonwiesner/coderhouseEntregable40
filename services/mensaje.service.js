@@ -1,4 +1,4 @@
-const Mensaje = require('./../models/mensaje.model')
+const Mensaje = require('./../models/mongo/mensaje.model')
 
 class MensajeService {
   

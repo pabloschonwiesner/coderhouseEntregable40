@@ -1,13 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const path = require('path')
-const { passport, checkIsAuthenticated }= require('./../middlewares/auth')
-const UsuarioServicio = require('./../services/usuario.service')
-const MensajesServicio = require('./../services/mensajes.service')
-const Usuario = require('./../models/usuario.model')
-
-const usuarioServicio = new UsuarioServicio()
-const mensajesServicio = new MensajesServicio()
+const { passport }= require('./../middlewares/auth')
+const { authFacebook, registerUsuario, ingresarUsuario } = require('./../controllers/usuario.controller')
 
 passport.serializeUser((user, done) => {
   done(null, user._id);
@@ -21,57 +15,10 @@ passport.deserializeUser((id, done) => {
 
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }))
 
-router.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/api/login'}), (req, res) => {
-  req.session.facebookId = req.user.facebookId
-  return res.status(200).json( { data: { facebookId }} )
-})
+router.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/api/login'}), authFacebook)
 
-// router.get('/login', (req, res) => {
-//   let usuarioExistente = JSON.parse(req.query.ue || false)
-//   let passwordIncorrecto = JSON.parse(req.query.pi || false)
-//   res.render('login', { usuarioExistente, passwordIncorrecto } )
-// })
+router.post('/register', registerUsuario)
 
-// router.get('/register', (req, res) => {
-//   res.sendFile(`${path.join(__dirname, '..', '/public/register.html')}`)
-// })
-
-// router.get('/perfil', checkIsAuthenticated, async  (req, res) => {
-//   let perfil = await usuarioServicio.getUserByIdFacebook(req.session.facebookId)
-//   console.log({perfil})
-//   res.render('perfil', { perfil } )     
-// })
-
-router.post('/register', async (req, res) => {
-  let usuario = await usuarioServicio.getUserByName(req.body.usuario.toLowerCase())
-  let ue = true
-  if(usuario.length == 0) {
-    ue = false
-  
-    let nuevoUsuario = { 
-      usuario: req.body.usuario.toLowerCase(), 
-      password: req.body.password, 
-      email: req.body.email.toLowerCase()
-    }
-  
-    usuario = await usuarioServicio.add(nuevoUsuario)
-  }
-  return res.status(200).json( { data: usuario } )
-})
-
-router.post('/ingresar', async (req, res) => {
-  try {
-    res.status(200).json( { data: 'login correcto' }) 
-  } catch ( err ) { console.log(err) }
-})
-
-// router.get('/salir', async (req, res) => {
-//   let usuarioDB = await usuarioServicio.getById(req.session.passport.user)
-  
-//   req.session.destroy( () => {
-//     mensajesServicio.sendMailEthereal(usuarioDB, 'logout')
-//     res.redirect('/api/')
-//   })
-// })
+router.post('/ingresar', ingresarUsuario)
 
 module.exports = router

@@ -12,7 +12,7 @@ io.on('connection', (client) => {
   })
 
   client.on('message', async (data) => {
-    console.log(data);
+    // console.log(data);
 
     if(data.text.includes('administrador')) {
       let mensaje = `${data.author.email} ${data.text}`
