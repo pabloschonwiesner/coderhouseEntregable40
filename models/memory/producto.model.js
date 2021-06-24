@@ -17,7 +17,7 @@ class ProductoModelMemory {
     } catch ( err ) { return err }
   }
 
-  async add ( producto ) {
+  async addProducto ( producto ) {
     try {
       producto.id_producto = await this.lastId() + 1
       this.guardar(producto)
@@ -25,7 +25,7 @@ class ProductoModelMemory {
     } catch ( err ) { return err }
   }
 
-  async update (producto) {
+  async updateProducto (producto) {
     try {
       let productoBuscado = await this.getOne( producto.id_producto )
       let index = await this.getIndexArray( producto.id_producto )
@@ -42,10 +42,10 @@ class ProductoModelMemory {
     } catch ( err ) { return err }  
   }
 
-  async delete ( id_producto ) {
+  async deleteProducto ( id_producto ) {
     try {
 
-      let index = await this.getIndexArray( producto.id_producto )
+      let index = await this.getIndexArray( id_producto )
 
       if(index < 0) {
         reject('No existe el producto')
@@ -53,7 +53,7 @@ class ProductoModelMemory {
 
       ConexionMemoria.connect().splice(index, 1)      
       return 1
-    } catch ( err ) { reject(err)}
+    } catch ( err ) { return err }
   }
 
   async lastId () {
@@ -84,4 +84,4 @@ class ProductoModelMemory {
   }
 }
 
-module.exports = ProductoModelMemory
+module.exports = new ProductoModelMemory()

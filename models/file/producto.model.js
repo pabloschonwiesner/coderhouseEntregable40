@@ -5,9 +5,9 @@ class ProductoModelFile {
 
   async getAll () {
     try {
-      console.log('leer archivo: ', path.resolve( __dirname, '../services/productos.txt'))
-      let contenido = await fs.promises.readFile( path.resolve( __dirname, '../services/productos.txt'), 'utf-8')
-      return contenido.lenght > 0 ? JSON.parse(contenido) : []
+      console.log('leer archivo: ', path.resolve( __dirname, '../../services/dbs/productos.txt'))
+      let contenido = await fs.promises.readFile( path.resolve( __dirname, '../../services/dbs/productos.txt'), 'utf-8')
+      return JSON.parse(contenido)
     } catch ( err ) { 
       return []
     } 
@@ -20,7 +20,7 @@ class ProductoModelFile {
     } catch (err) { return err }  
   }
 
-  async add ( producto ) {
+  async addProducto ( producto ) {
     try {
       let contenido = await this.getAll()
       producto.id_producto = await this.lastId() + 1
@@ -30,7 +30,7 @@ class ProductoModelFile {
     } catch (err) { return err }    
   }
 
-  async update (producto) {
+  async updateProducto (producto) {
     try {
       let contenido = await this.getAll()
       let productoFile = await this.getOne( producto.id_producto )
@@ -39,8 +39,8 @@ class ProductoModelFile {
         return 'No existe el producto'
       }
 
-      productoFile.titulo = producto.titulo
-      productoFile.precio = producto.precio
+      productoFile.title = producto.title
+      productoFile.price = producto.price
       productoFile.thumbnail = producto.thumbnail
 
       contenido[index] = productoFile
@@ -50,7 +50,7 @@ class ProductoModelFile {
     } catch ( err ) { return err }    
   }
 
-  async delete ( id_producto) {
+  async deleteProducto ( id_producto) {
     try {
       let contenido = await this.getAll()
       let index = await this.getIndexArray( id_producto )
@@ -68,25 +68,26 @@ class ProductoModelFile {
 
   async lastId () {
     try {
-      let contenido = await this.getAll()
-      let id = contenido.lenght > 0 ? contenido[contenido.lenght].id_producto : 0
+      let contenido = JSON.parse(JSON.stringify(await this.getAll()))
+      let id = contenido.length > 0 ? contenido[contenido.length -1].id_producto : 0
       return id
     } catch (err) { return err}
   }
 
   async guardar ( contenido ) {
     try {
-      await fs.promises.writeFile(`./${this.archivo}`, JSON.stringify(contenido, null, '\t'), 'utf-8')
+      await fs.promises.writeFile( path.resolve( __dirname, '../../services/dbs/productos.txt'), JSON.stringify(contenido, null, '\t'), 'utf-8')
+      
       return true
     } catch ( err ) { return err }
   }
 
   async getIndexArray ( id_producto ) {
     try {
-      let contenido = await this.getAll()
+      let contenido = JSON.parse(JSON.stringify(await this.getAll()))
       return contenido.findIndex( producto => producto.id_producto == id_producto )
     } catch ( err ) { return err }    
   }
 }
 
-module.exports = ProductoModelFile
+module.exports = new ProductoModelFile()

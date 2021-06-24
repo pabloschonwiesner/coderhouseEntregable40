@@ -12,4 +12,4 @@ class ConexionMemoria {
 
 }
 
-module.exports = new ConexionMemoria()
+module.exports = ConexionMemoria

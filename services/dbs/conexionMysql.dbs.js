@@ -1,4 +1,4 @@
-const mysql = require('mysql')
+const mysql = require('mysql2/promise')
 const { process } = require('./../env.service')
 
 class ConexionMysql {
@@ -51,23 +51,24 @@ class ConexionMysql {
   //   })
   // }
 
-  pool
+  connection
 
-  DbConnect () {
-    return mysql.createPool({
-      host: process.env.HOST_MYSQL,
-      user: process.env.USER_MYSQL,
-      password: process.env.PASSWORD_MYSQL,
-      database: process.env.DATABASE_MYSQL
-    })
+  constructor() {
+    this.connect()
   }
 
   async connect () {
-    if(this.pool == null) {
-      this.pool = this.DbConnect()
+    if(this.connection == null) {
+      this.connection = await mysql.createConnection({
+        host: process.env.HOST_MYSQL,
+        user: process.env.USER_MYSQL,
+        password: process.env.PASSWORD_MYSQL,
+        database: process.env.DATABASE_MYSQL
+      })
     }
-    return this.pool
+    return this.connection
   }
+
 
 }
 
